@@ -1,0 +1,283 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main ]
+  release:
+    types: [ published ]
+
+jobs:
+  test:
+    name: Test
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ["3.10", "3.11", "3.12"]
+    
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v4
+      with:
+        python-version: ${{ matrix.python-version }}
+    
+    - name: Install Poetry
+      uses: snok/install-poetry@v1
+      with:
+        version: latest
+        virtualenvs-create: true
+        virtualenvs-in-project: true
+    
+    - name: Load cached venv
+      id: cached-poetry-dependencies
+      uses: actions/cache@v3
+      with:
+        path: .venv
+        key: venv-${{ runner.os }}-${{ matrix.python-version }}-${{ hashFiles('**/poetry.lock') }}
+    
+    - name: Install dependencies
+      if: steps.cached-poetry-dependencies.outputs.cache-hit != 'true'
+      run: poetry install --no-interaction --no-root
+    
+    - name: Install project
+      run: poetry install --no-interaction
+    
+    - name: Lint with flake8
+      run: |
+        poetry run flake8 egile_mcp_starter tests --count --select=E9,F63,F7,F82 --show-source --statistics
+        poetry run flake8 egile_mcp_starter tests --count --exit-zero --max-complexity=10 --max-line-length=88 --statistics
+    
+    - name: Check code formatting with black
+      run: |
+        poetry run black --check egile_mcp_starter tests
+    
+    - name: Check import sorting with isort
+      run: |
+        poetry run isort --check-only egile_mcp_starter tests
+    
+    - name: Type checking with mypy
+      run: |
+        poetry run mypy egile_mcp_starter
+    
+    - name: Test with pytest
+      run: |
+        poetry run pytest tests/ -v --cov=egile_mcp_starter --cov-report=xml --cov-report=html
+    
+    - name: Upload coverage reports to Codecov
+      uses: codecov/codecov-action@v3
+      with:
+        file: ./coverage.xml
+        flags: unittests
+        name: codecov-umbrella
+        fail_ci_if_error: false
+
+  test-template-generation:
+    name: Test Template Generation
+    runs-on: ubuntu-latest
+    needs: test
+    
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: "3.11"
+    
+    - name: Install Poetry
+      uses: snok/install-poetry@v1
+      with:
+        version: latest
+        virtualenvs-create: true
+        virtualenvs-in-project: true
+    
+    - name: Install dependencies
+      run: poetry install --no-interaction
+    
+    - name: Generate test project (tools)
+      run: |
+        mkdir -p test-outputs
+        cd test-outputs
+        cat > test-config.yaml << 'EOF'
+        default_context:
+          project_name: "Test Tools Server"
+          project_slug: "test_tools_server"
+          project_description: "A test MCP server with tools"
+          author_name: "CI Test"
+          author_email: "ci@test.com"
+          github_username: "citest"
+          version: "0.1.0"
+          python_version: "3.11"
+          use_docker: "y"
+          use_github_actions: "y"
+          use_pre_commit: "y"
+          license: "MIT"
+          include_examples: "y"
+          server_type: "tools"
+        EOF
+        poetry run egile-mcp-starter --output-dir . --config-file test-config.yaml --no-input
+        ls -la test_tools_server/
+    
+    - name: Test generated project structure
+      run: |
+        cd test-outputs/test_tools_server
+        [ -f "pyproject.toml" ] || exit 1
+        [ -f "src/main.py" ] || exit 1
+        [ -d "src/test_tools_server" ] || exit 1
+        [ -d "tests" ] || exit 1
+        [ -f "Dockerfile" ] || exit 1
+        [ -f ".github/workflows/ci.yml" ] || exit 1
+        echo "✅ All expected files are present"
+    
+    - name: Test generated project with Poetry
+      run: |
+        cd test-outputs/test_tools_server
+        poetry install --no-interaction
+        poetry run pytest --version
+        echo "✅ Generated project Poetry setup works"
+
+  security:
+    name: Security Scan
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: "3.11"
+    
+    - name: Install Poetry
+      uses: snok/install-poetry@v1
+      with:
+        version: latest
+        virtualenvs-create: true
+        virtualenvs-in-project: true
+    
+    - name: Install dependencies
+      run: |
+        poetry install --no-interaction
+        poetry add --group dev safety bandit
+    
+    - name: Run safety check
+      run: |
+        poetry run safety check --json --output safety-report.json || true
+    
+    - name: Run bandit security scan
+      run: |
+        poetry run bandit -r egile_mcp_starter/ -f json -o bandit-report.json || true
+    
+    - name: Upload security scan results
+      uses: actions/upload-artifact@v3
+      if: always()
+      with:
+        name: security-reports
+        path: |
+          safety-report.json
+          bandit-report.json
+
+  build:
+    name: Build Package
+    runs-on: ubuntu-latest
+    needs: [test, test-template-generation, security]
+    
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: "3.11"
+    
+    - name: Install Poetry
+      uses: snok/install-poetry@v1
+      with:
+        version: latest
+        virtualenvs-create: true
+        virtualenvs-in-project: true
+    
+    - name: Build package
+      run: poetry build
+    
+    - name: Upload build artifacts
+      uses: actions/upload-artifact@v3
+      with:
+        name: package-artifacts
+        path: dist/
+
+  publish:
+    name: Publish to PyPI
+    runs-on: ubuntu-latest
+    needs: build
+    if: github.event_name == 'release' && github.event.action == 'published'
+    
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: "3.11"
+    
+    - name: Install Poetry
+      uses: snok/install-poetry@v1
+      with:
+        version: latest
+        virtualenvs-create: true
+        virtualenvs-in-project: true
+    
+    - name: Configure Poetry
+      run: |
+        poetry config pypi-token.pypi ${{ secrets.PYPI_API_TOKEN }}
+    
+    - name: Build and publish
+      run: |
+        poetry build
+        poetry publish
+
+  docker:
+    name: Build Docker Image
+    runs-on: ubuntu-latest
+    needs: test
+    if: github.ref == 'refs/heads/main' || github.event_name == 'release'
+    
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@v3
+    
+    - name: Log in to Docker Hub
+      if: github.event_name == 'release'
+      uses: docker/login-action@v3
+      with:
+        username: ${{ secrets.DOCKER_USERNAME }}
+        password: ${{ secrets.DOCKER_PASSWORD }}
+    
+    - name: Extract metadata
+      id: meta
+      uses: docker/metadata-action@v5
+      with:
+        images: jpoullet2000/egile-mcp-starter
+        tags: |
+          type=ref,event=branch
+          type=ref,event=pr
+          type=semver,pattern={{version}}
+          type=semver,pattern={{major}}.{{minor}}
+          type=semver,pattern={{major}}
+          type=raw,value=latest,enable={{is_default_branch}}
+    
+    - name: Build and push Docker image
+      uses: docker/build-push-action@v5
+      with:
+        context: .
+        platforms: linux/amd64,linux/arm64
+        push: ${{ github.event_name == 'release' }}
+        tags: ${{ steps.meta.outputs.tags }}
+        labels: ${{ steps.meta.outputs.labels }}
+        cache-from: type=gha
+        cache-to: type=gha,mode=max

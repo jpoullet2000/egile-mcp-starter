@@ -413,10 +413,66 @@ Add your generated server to Claude Desktop configuration:
 1. Fork the repository
 2. Create a feature branch (`git checkout -b feature/amazing-feature`)
 3. Make your changes
-4. Run tests (`pytest`)
-5. Commit your changes (`git commit -m 'Add amazing feature'`)
-6. Push to the branch (`git push origin feature/amazing-feature`)
-7. Open a Pull Request
+4. Run tests (`poetry run pytest`)
+5. Run code quality checks (`poetry run black . && poetry run flake8 . && poetry run mypy egile_mcp_starter`)
+6. Commit your changes (`git commit -m 'Add amazing feature'`)
+7. Push to the branch (`git push origin feature/amazing-feature`)
+8. Open a Pull Request
+
+### Development Setup
+
+```bash
+# Clone the repository
+git clone https://github.com/jpoullet2000/egile-mcp-starter.git
+cd egile-mcp-starter
+
+# Install with Poetry
+poetry install
+
+# Install pre-commit hooks
+poetry run pre-commit install
+
+# Run tests
+poetry run pytest
+
+# Run all quality checks
+poetry run black .
+poetry run flake8 .
+poetry run mypy egile_mcp_starter
+poetry run pytest --cov=egile_mcp_starter
+```
+
+### CI/CD Pipeline
+
+The project includes a comprehensive CI/CD pipeline with GitHub Actions that:
+
+- **Testing**: Runs tests across Python 3.10, 3.11, and 3.12
+- **Code Quality**: Checks formatting (Black), linting (Flake8), type hints (MyPy), and import sorting (isort)
+- **Security**: Scans dependencies with Safety and code with Bandit
+- **Template Testing**: Validates that generated projects work correctly
+- **Docker**: Builds multi-platform Docker images
+- **Publishing**: Automatically publishes to PyPI on releases
+
+The pipeline runs on:
+- Every push to `main` and `develop` branches
+- Every pull request to `main`
+- Every release
+
+### Docker Support
+
+Build and run the project in Docker:
+
+```bash
+# Build the image
+docker build -t egile-mcp-starter .
+
+# Run interactively
+docker run -it --rm -v $(pwd)/output:/app/output egile-mcp-starter
+
+# Generate a project
+docker run -it --rm -v $(pwd)/output:/app/output egile-mcp-starter \
+  --output-dir /app/output --no-input
+```
 
 ## Roadmap
 
@@ -428,7 +484,7 @@ Add your generated server to Claude Desktop configuration:
 
 ## Requirements
 
-- Python 3.8+
+- Python 3.10+
 - cookiecutter
 - Git (for project initialization)
 
