@@ -1,5 +1,12 @@
 # egile-mcp-starter
 
+[![PyPI - Version](https://img.shields.io/pypi/v/egile-mcp-starter.svg)](https://pypi.org/project/egile-mcp-starter)
+[![Tests](https://github.com/jpoullet2000/egile-mcp-starter/actions/workflows/ci.yml/badge.svg)](https://github.com/jpoullet2000/egile-mcp-starter/actions/workflows/ci.yml)
+[![Python Versions](https://img.shields.io/pypi/pyversions/egile-mcp-starter.svg)](https://pypi.org/project/egile-mcp-starter)
+[![License](https://img.shields.io/github/license/jpoullet2000/egile-mcp-starter.svg)](https://github.com/jpoullet2000/egile-mcp-starter/blob/main/LICENSE)
+[![Docker](https://img.shields.io/docker/automated/jpoullet2000/egile-mcp-starter.svg)](https://hub.docker.com/r/jpoullet2000/egile-mcp-starter)
+[![Code Style](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
+
 A comprehensive cookiecutter template for creating Model Context Protocol (MCP) servers using the FASTMCP framework.
 
 ## Features
