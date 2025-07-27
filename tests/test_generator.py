@@ -1,9 +1,10 @@
 """Test the egile-mcp-starter package functionality."""
 
 import tempfile
-import pytest
 from pathlib import Path
 from unittest.mock import patch
+
+import pytest
 
 from egile_mcp_starter.generator import MCPProjectGenerator
 

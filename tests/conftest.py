@@ -1,7 +1,8 @@
 """Test configuration for the egile-mcp-starter package."""
 
-import pytest
 from pathlib import Path
+
+import pytest
 
 
 @pytest.fixture

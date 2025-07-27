@@ -1,7 +1,9 @@
 """CLI interface for egile-mcp-starter."""
 
-import click
 import sys
+
+import click
+
 from .generator import MCPProjectGenerator
 
 
@@ -25,7 +27,13 @@ from .generator import MCPProjectGenerator
     help="Use default values for all template variables",
 )
 @click.option("--verbose", "-v", is_flag=True, help="Print status to stdout")
-def main(output_dir, no_input, config_file, default_config, verbose):
+def main(
+    output_dir: str,
+    no_input: bool,
+    config_file: str,
+    default_config: bool,
+    verbose: bool,
+) -> None:
     """
     Generate a new MCP server project using the FASTMCP framework.
 

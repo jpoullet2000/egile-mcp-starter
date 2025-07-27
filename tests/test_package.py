@@ -1,6 +1,6 @@
 """Tests for the main package."""
 
-from egile_mcp_starter import __version__, __author__, __email__
+from egile_mcp_starter import __author__, __email__, __version__
 
 
 def test_package_metadata():

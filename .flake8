@@ -1,0 +1,19 @@
+[flake8]
+max-line-length = 88
+max-complexity = 10
+exclude = 
+    .git,
+    __pycache__,
+    .pytest_cache,
+    .mypy_cache,
+    .venv,
+    venv,
+    dist,
+    build,
+    *.egg-info,
+    egile_mcp_starter/template
+extend-ignore = E203, W503
+select = E,W,F,C
+per-file-ignores =
+    __init__.py:F401
+    tests/*:S101

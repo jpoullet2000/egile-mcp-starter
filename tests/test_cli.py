@@ -1,7 +1,8 @@
 """Test the CLI functionality."""
 
+from unittest.mock import MagicMock, patch
+
 from click.testing import CliRunner
-from unittest.mock import patch, MagicMock
 
 from egile_mcp_starter.cli import main
 

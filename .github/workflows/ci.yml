@@ -48,7 +48,7 @@ jobs:
     - name: Lint with flake8
       run: |
         poetry run flake8 egile_mcp_starter tests --count --select=E9,F63,F7,F82 --show-source --statistics
-        poetry run flake8 egile_mcp_starter tests --count --exit-zero --max-complexity=10 --max-line-length=88 --statistics
+        poetry run flake8 egile_mcp_starter tests --count --exit-zero --statistics
     
     - name: Check code formatting with black
       run: |

@@ -1,10 +1,10 @@
 """Project generator for MCP servers using cookiecutter."""
 
 from pathlib import Path
-from typing import Dict, Any, Optional
+from typing import Any, Dict, Optional
 
 try:
-    from cookiecutter.main import cookiecutter
+    from cookiecutter.main import cookiecutter  # type: ignore
 except ImportError:
     cookiecutter = None
 
@@ -48,7 +48,8 @@ class MCPProjectGenerator:
         """
         if cookiecutter is None:
             raise Exception(
-                "cookiecutter is not installed. Please install it with: pip install cookiecutter"
+                "cookiecutter is not installed. Please install it with: "
+                "pip install cookiecutter"
             )
 
         if self.verbose:

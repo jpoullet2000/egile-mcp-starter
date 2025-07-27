@@ -4,7 +4,7 @@ __version__ = "1.0.0"
 __author__ = "Jean-Baptiste Poullet"
 __email__ = "jpoullet2000@gmail.com"
 
-from .generator import MCPProjectGenerator
 from .cli import main
+from .generator import MCPProjectGenerator
 
 __all__ = ["MCPProjectGenerator", "main"]
