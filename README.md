@@ -6,6 +6,8 @@
 [![License](https://img.shields.io/github/license/jpoullet2000/egile-mcp-starter.svg)](https://github.com/jpoullet2000/egile-mcp-starter/blob/main/LICENSE)
 [![Docker](https://img.shields.io/docker/automated/jpoullet2000/egile-mcp-starter.svg)](https://hub.docker.com/r/jpoullet2000/egile-mcp-starter)
 [![Code Style](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
+[![FastMCP](https://img.shields.io/badge/built%20with-FastMCP-green.svg)](https://github.com/jlowin/fastmcp)
+[![MCP](https://img.shields.io/badge/protocol-MCP-orange.svg)](https://modelcontextprotocol.io/)
 
 A comprehensive cookiecutter template for creating Model Context Protocol (MCP) servers using the FASTMCP framework.
 
