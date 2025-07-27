@@ -1,0 +1,23 @@
+{
+    "project_name": "My MCP Server",
+    "project_slug": "{{ cookiecutter.project_name.lower().replace(' ', '_').replace('-', '_') }}",
+    "project_description": "A Model Context Protocol server built with FASTMCP",
+    "author_name": "Your Name",
+    "author_email": "your.email@example.com",
+    "github_username": "yourusername",
+    "version": "0.1.0",
+    "python_version": ["3.11", "3.10", "3.12"],
+    "use_docker": ["y", "n"],
+    "use_github_actions": ["y", "n"],
+    "use_pre_commit": ["y", "n"],
+    "license": ["MIT", "Apache-2.0", "GPL-3.0", "BSD-3-Clause", "None"],
+    "include_examples": ["y", "n"],
+    "server_type": ["tools", "resources", "prompts", "full"],
+    "_copy_without_render": [
+        "*.pyc",
+        "__pycache__",
+        ".git",
+        ".DS_Store",
+        ".github/workflows/ci.yml"
+    ]
+}

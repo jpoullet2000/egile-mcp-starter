@@ -1,0 +1,53 @@
+version: '3.8'
+
+services:
+  {{ cookiecutter.project_slug }}:
+    build: .
+    ports:
+      - "8000:8000"
+    environment:
+      - MCP_HOST=0.0.0.0
+      - MCP_PORT=8000
+      - MCP_LOG_LEVEL=INFO
+      - MCP_SERVER_NAME={{ cookiecutter.project_name }}
+      - MCP_SERVER_VERSION={{ cookiecutter.version }}
+      {% if cookiecutter.server_type == "tools" or cookiecutter.server_type == "full" -%}
+      - MCP_ENABLE_TOOLS=true
+      {% else -%}
+      - MCP_ENABLE_TOOLS=false
+      {% endif -%}
+      {% if cookiecutter.server_type == "resources" or cookiecutter.server_type == "full" -%}
+      - MCP_ENABLE_RESOURCES=true
+      {% else -%}
+      - MCP_ENABLE_RESOURCES=false
+      {% endif -%}
+      {% if cookiecutter.server_type == "prompts" or cookiecutter.server_type == "full" -%}
+      - MCP_ENABLE_PROMPTS=true
+      {% else -%}
+      - MCP_ENABLE_PROMPTS=false
+      {% endif %}
+    volumes:
+      - ./config:/app/config:ro
+      - ./logs:/app/logs
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+  # Optional: Add a database service if needed
+  # postgres:
+  #   image: postgres:15-alpine
+  #   environment:
+  #     POSTGRES_DB: {{ cookiecutter.project_slug }}
+  #     POSTGRES_USER: mcp_user
+  #     POSTGRES_PASSWORD: mcp_password
+  #   volumes:
+  #     - postgres_data:/var/lib/postgresql/data
+  #   ports:
+  #     - "5432:5432"
+
+# volumes:
+#   postgres_data:

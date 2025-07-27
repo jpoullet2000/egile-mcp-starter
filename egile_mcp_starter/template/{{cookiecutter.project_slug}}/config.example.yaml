@@ -1,0 +1,59 @@
+# {{ cookiecutter.project_name }} Configuration
+# This is a sample configuration file showing all available options
+
+# Server settings
+host: localhost
+port: 8000
+log_level: INFO
+
+# MCP Server identification
+server_name: "{{ cookiecutter.project_name }}"
+server_version: "{{ cookiecutter.version }}"
+
+# Feature toggles
+{% if cookiecutter.server_type == "tools" or cookiecutter.server_type == "full" -%}
+enable_tools: true
+{% else -%}
+enable_tools: false
+{% endif -%}
+{% if cookiecutter.server_type == "resources" or cookiecutter.server_type == "full" -%}
+enable_resources: true
+{% else -%}
+enable_resources: false
+{% endif -%}
+{% if cookiecutter.server_type == "prompts" or cookiecutter.server_type == "full" -%}
+enable_prompts: true
+{% else -%}
+enable_prompts: false
+{% endif %}
+
+# Custom settings
+custom_settings:
+  # Add your custom configuration options here
+  debug_mode: false
+  max_concurrent_requests: 10
+  timeout_seconds: 30
+  
+  # Example database configuration
+  # database:
+  #   url: "sqlite:///{{ cookiecutter.project_slug }}.db"
+  #   pool_size: 5
+  #   max_overflow: 10
+  
+  # Example API configuration
+  # external_apis:
+  #   example_api:
+  #     base_url: "https://api.example.com"
+  #     api_key: "${EXAMPLE_API_KEY}"  # Environment variable
+  #     timeout: 30
+  
+  # Example rate limiting
+  # rate_limiting:
+  #   requests_per_minute: 60
+  #   burst_limit: 10
+  
+  # Example logging configuration
+  # logging:
+  #   file_path: "logs/{{ cookiecutter.project_slug }}.log"
+  #   max_file_size: "10MB"
+  #   backup_count: 5

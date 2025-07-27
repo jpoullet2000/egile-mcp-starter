@@ -1,0 +1,13 @@
+include README.md
+include LICENSE
+include MANIFEST.in
+
+recursive-include egile_mcp_starter/template *
+recursive-include egile_mcp_starter/template/.* 
+
+# Exclude compiled Python files
+global-exclude *.pyc
+global-exclude __pycache__
+global-exclude .git*
+global-exclude .DS_Store
+global-exclude *.egg-info
