@@ -140,7 +140,7 @@ The cookiecutter template supports these configuration options:
 | `author_email` | Your email | String |
 | `github_username` | Your GitHub username | String |
 | `version` | Initial version | String (default: 0.1.0) |
-| `python_version` | Python version | 3.8, 3.9, 3.10, 3.11, 3.12 |
+| `python_version` | Python version | 3.10, 3.11, 3.12 |
 | `use_docker` | Include Docker support | y/n |
 | `use_github_actions` | Include CI/CD workflows | y/n |
 | `use_pre_commit` | Include pre-commit hooks | y/n |
@@ -192,7 +192,7 @@ The Model Context Protocol (MCP) is a standardized protocol for communication be
 ### 🎯 **Template Options**
 
 - **Server Types**: Choose from tools, resources, prompts, or full MCP server
-- **Python Versions**: Support for Python 3.8-3.12
+- **Python Versions**: Support for Python 3.10-3.12
 - **Docker Integration**: Optional Docker and docker-compose setup
 - **CI/CD Ready**: GitHub Actions workflow included
 - **Development Tools**: Pre-commit hooks, linting, testing
@@ -238,7 +238,7 @@ The template will prompt you for:
 - **Project name and description**
 - **Author information**
 - **Server type** (tools, resources, prompts, or full)
-- **Python version** (3.8-3.12)
+- **Python version** (3.10-3.12)
 - **Optional features** (Docker, GitHub Actions, pre-commit)
 - **License choice** (MIT, Apache-2.0, GPL-3.0, BSD-3-Clause, or None)
 
