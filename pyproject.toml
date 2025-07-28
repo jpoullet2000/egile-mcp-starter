@@ -4,7 +4,7 @@ build-backend = "poetry.core.masonry.api"
 
 [project]
 name = "egile-mcp-starter"
-version = "1.0.0"
+version = "0.1.0"
 description = "A comprehensive cookiecutter template for creating Model Context Protocol (MCP) servers using the FASTMCP framework"
 authors = [{name = "Jean-Baptiste Poullet", email = "egile@gmail.com"}]
 readme = "README.md"
