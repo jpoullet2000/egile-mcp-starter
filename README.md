@@ -28,8 +28,12 @@ A comprehensive cookiecutter template for creating Model Context Protocol (MCP) 
 ### Installation
 
 ```bash
-# Install with Poetry (recommended)
+# Install with pip (recommended)
 pip install egile-mcp-starter
+
+# Or use Docker
+docker pull jpoullet2000/egile-mcp-starter
+docker run -it jpoullet2000/egile-mcp-starter
 
 # Or install from source
 git clone https://github.com/jpoullet2000/egile-mcp-starter.git
@@ -401,6 +405,8 @@ egile-mcp-starter --verbose
 
 ## Integration with Claude Desktop
 
+### Option 1: Direct Python Execution
+
 Add your generated server to Claude Desktop configuration:
 
 ```json
@@ -416,6 +422,30 @@ Add your generated server to Claude Desktop configuration:
   }
 }
 ```
+
+### Option 2: Using Docker
+
+For containerized deployment, you can use the Docker image:
+
+```json
+{
+  "mcpServers": {
+    "your-server-name": {
+      "command": "docker",
+      "args": [
+        "run", "--rm", "-i",
+        "-v", "/path/to/your/config:/app/config",
+        "jpoullet2000/egile-mcp-starter"
+      ],
+      "env": {
+        "LOG_LEVEL": "INFO"
+      }
+    }
+  }
+}
+```
+
+Note: Replace `/path/to/your/config` with the actual path to your server's configuration files.
 
 ## Contributing
 
