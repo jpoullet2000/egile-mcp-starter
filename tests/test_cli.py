@@ -38,7 +38,8 @@ class TestCLI:
             config_file=None,
             default_config=False,
             verbose=False,
-            template="mcp",  # Added template parameter
+            template="mcp",
+            project_name=None,
         )
         mock_generator.generate.assert_called_once()
 
@@ -61,7 +62,8 @@ class TestCLI:
             config_file=None,
             default_config=False,
             verbose=True,
-            template="mcp",  # Added template parameter
+            template="mcp",
+            project_name=None,
         )
 
     @patch("egile_mcp_starter.cli.MCPProjectGenerator")
@@ -119,5 +121,6 @@ class TestCLI:
                 config_file="test-config.yaml",
                 default_config=False,
                 verbose=False,
-                template="mcp",  # Added template parameter
+                template="mcp",
+                project_name=None,
             )

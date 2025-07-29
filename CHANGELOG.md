@@ -22,6 +22,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **Enhanced CLI**: Extended command-line interface with template selection
   - `--template` option to choose between available templates (mcp, rag)
   - `--list-templates` option to display all available templates
+  - `--project-name` option to override project name and directory structure
   - Dynamic template validation and error handling
   - Improved help messages and user guidance
 - **Comprehensive Documentation**: 
@@ -53,6 +54,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Template path resolution in different environments
 - Test compatibility with new plugin architecture
 - Error handling for invalid template selections
+- Project slug generation in template plugins when project name is overridden
+- Plugin system context handling for custom project names
 
 ### Technical Details
 - Plugin system supports hooks for pre/post generation processing

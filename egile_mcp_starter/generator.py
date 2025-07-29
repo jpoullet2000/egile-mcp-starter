@@ -22,6 +22,7 @@ class MCPProjectGenerator:
         default_config: bool = False,
         verbose: bool = False,
         template: str = "mcp",
+        project_name: Optional[str] = None,
     ):
         """Initialize the MCP project generator.
 
@@ -32,12 +33,14 @@ class MCPProjectGenerator:
             default_config: Use default configuration values
             verbose: Enable verbose output
             template: Name of the template to use (default: "mcp")
+            project_name: Override the project name
         """
         self.output_dir = Path(output_dir).resolve()
         self.no_input = no_input or default_config
         self.config_file = config_file
         self.verbose = verbose
         self.template_name = template
+        self.project_name = project_name
 
         # Get the template registry
         self.registry = get_registry()
@@ -79,6 +82,12 @@ class MCPProjectGenerator:
         try:
             # Get default context from plugin
             default_context = plugin.get_default_context()
+
+            # Override project name if provided
+            if self.project_name:
+                default_context["project_name"] = self.project_name
+                if self.verbose:
+                    print(f"🏷️  Project name override: {self.project_name}")
 
             # Apply pre-generation hook
             if not self.no_input:

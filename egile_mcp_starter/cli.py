@@ -28,6 +28,10 @@ from .plugins.registry import get_registry
     is_flag=True,
     help="Use default values for all template variables",
 )
+@click.option(
+    "--project-name",
+    help="Override the project name (affects directory name and package name)",
+)
 @click.option("--verbose", "-v", is_flag=True, help="Print status to stdout")
 @click.option(
     "--template",
@@ -46,6 +50,7 @@ def main(
     no_input: bool,
     config_file: str,
     default_config: bool,
+    project_name: str,
     verbose: bool,
     template: str,
     list_templates: bool,
@@ -89,6 +94,7 @@ def main(
             default_config=default_config,
             verbose=verbose,
             template=template,
+            project_name=project_name,
         )
 
         project_path = generator.generate()
@@ -123,7 +129,7 @@ def _get_template_choices() -> List[str]:
 
 
 # Update the template option with dynamic choices
-main.params[5].type = click.Choice(_get_template_choices())
+main.params[6].type = click.Choice(_get_template_choices())
 
 
 if __name__ == "__main__":

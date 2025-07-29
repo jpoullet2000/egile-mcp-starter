@@ -57,8 +57,40 @@ egile-mcp-starter --template rag
 # List available templates
 egile-mcp-starter --list-templates
 
-# With options
-egile-mcp-starter --template rag --output-dir ./my-projects --verbose
+# With custom project name
+egile-mcp-starter --project-name "my_custom_server"
+
+# With multiple options
+egile-mcp-starter --template rag --output-dir ./my-projects --project-name "my_rag_server" --verbose
+```
+
+### CLI Options
+
+The `egile-mcp-starter` command supports the following options:
+
+| Option | Short | Description | Example |
+|--------|-------|-------------|---------|
+| `--template` | `-t` | Choose the template to use | `--template rag` |
+| `--project-name` | | Override the project name (affects directory and package name) | `--project-name "my_server"` |
+| `--output-dir` | `-o` | Output directory for the generated project | `--output-dir ./projects` |
+| `--list-templates` | | List all available templates and exit | `--list-templates` |
+| `--verbose` | `-v` | Print detailed status information | `--verbose` |
+| `--no-input` | | Don't prompt for parameters, use defaults | `--no-input` |
+| `--config-file` | | Path to cookiecutter config file | `--config-file config.yaml` |
+| `--default-config` | | Use default values for all template variables | `--default-config` |
+| `--help` | | Show help message and exit | `--help` |
+
+**Examples:**
+
+```bash
+# Generate with custom name and template
+egile-mcp-starter --template rag --project-name "my_awesome_rag_server"
+
+# Non-interactive generation for CI/CD
+egile-mcp-starter --no-input --project-name "test_server" --output-dir ./build
+
+# List available templates
+egile-mcp-starter --list-templates
 ```
 
 ### Available Templates
@@ -102,7 +134,7 @@ egile-mcp-starter --template rag
 egile-mcp-starter --list-templates
 
 # Generate with specific template and options
-egile-mcp-starter --template rag --output-dir ./my-projects --verbose
+egile-mcp-starter --template rag --output-dir ./my-projects --project-name "my_rag_server" --verbose
 ```
 
 ## Generated Project Structure

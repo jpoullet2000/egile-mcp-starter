@@ -119,8 +119,8 @@ class RAGTemplatePlugin(TemplatePlugin):
         Returns:
             Modified context variables
         """
-        # Ensure project_slug is properly formatted
-        if "project_name" in context and "project_slug" not in context:
+        # Ensure project_slug is properly formatted based on project_name
+        if "project_name" in context:
             project_slug = (
                 context["project_name"].lower().replace(" ", "_").replace("-", "_")
             )
