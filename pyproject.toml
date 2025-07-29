@@ -34,7 +34,7 @@ dependencies = [
 [project.urls]
 Homepage = "https://github.com/jpoullet2000/egile-mcp-starter"
 Repository = "https://github.com/jpoullet2000/egile-mcp-starter"
-Documentation = "https://github.com/jpoullet2000/egile-mcp-starter"
+Documentation = "https://egile-mcp-starter.readthedocs.io/"
 
 [project.scripts]
 egile-mcp-starter = "egile_mcp_starter.cli:main"
