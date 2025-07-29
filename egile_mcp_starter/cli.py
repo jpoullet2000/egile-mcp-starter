@@ -1,6 +1,7 @@
 """CLI interface for egile-mcp-starter."""
 
 import sys
+from typing import List
 
 import click
 
@@ -112,7 +113,7 @@ def main(
 
 
 # Dynamically populate template choices
-def _get_template_choices():
+def _get_template_choices() -> List[str]:
     """Get available template choices for CLI."""
     try:
         registry = get_registry()

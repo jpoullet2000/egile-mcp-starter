@@ -108,6 +108,7 @@ warn_unreachable = true
 strict_equality = true
 exclude = [
     "egile_mcp_starter/template/",
+    "egile_mcp_starter/templates/",
 ]
 
 [[tool.mypy.overrides]]

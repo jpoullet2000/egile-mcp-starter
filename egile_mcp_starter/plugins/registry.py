@@ -10,7 +10,7 @@ from .base import TemplatePlugin
 class TemplateRegistry:
     """Registry for managing template plugins."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize the template registry."""
         self._plugins: Dict[str, TemplatePlugin] = {}
         self._discover_builtin_templates()
@@ -111,7 +111,7 @@ class TemplateRegistry:
                     and attr != TemplatePlugin
                 ):
                     try:
-                        plugin_instance = attr()
+                        plugin_instance = attr()  # type: ignore[call-arg]
                         self.register(plugin_instance)
                     except Exception:
                         pass  # Skip plugins that fail to instantiate

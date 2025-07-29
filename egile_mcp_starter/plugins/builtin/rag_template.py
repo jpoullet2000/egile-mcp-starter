@@ -10,7 +10,7 @@ class RAGTemplatePlugin(TemplatePlugin):
     """RAG MCP server template plugin with vector databases and retrieval
     capabilities."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize the RAG template plugin."""
         super().__init__(
             name="rag",

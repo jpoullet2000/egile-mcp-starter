@@ -9,7 +9,7 @@ from ..base import TemplatePlugin
 class MCPTemplatePlugin(TemplatePlugin):
     """Original MCP server template plugin."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize the MCP template plugin."""
         super().__init__(
             name="mcp",
