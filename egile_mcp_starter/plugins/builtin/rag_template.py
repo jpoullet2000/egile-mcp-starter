@@ -15,7 +15,7 @@ class RAGTemplatePlugin(TemplatePlugin):
         super().__init__(
             name="rag",
             description=(
-                "RAG-enabled MCP server with vector databases and " "retrieval tools"
+                "RAG-enabled MCP server with vector databases and retrieval tools"
             ),
             version="1.0.0",
         )
