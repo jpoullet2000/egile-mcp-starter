@@ -8,8 +8,11 @@
 [![Code Style](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
 [![FastMCP](https://img.shields.io/badge/built%20with-FastMCP-green.svg)](https://github.com/jlowin/fastmcp)
 [![MCP](https://img.shields.io/badge/protocol-MCP-orange.svg)](https://modelcontextprotocol.io/)
+[![Documentation](https://img.shields.io/badge/docs-ReadTheDocs-blue.svg)](https://egile-mcp-starter.readthedocs.io/)
 
 A comprehensive cookiecutter template for creating Model Context Protocol (MCP) servers using the FASTMCP framework.
+
+📖 **[Full Documentation](https://egile-mcp-starter.readthedocs.io/)** | 🚀 **[Quick Start](#quick-start)** | 🛠️ **[Templates](#available-templates)**
 
 ## Features
 
@@ -257,11 +260,16 @@ poetry run pre-commit run --all-files
 
 ## Documentation
 
-For detailed information about templates and the plugin system, see:
+📖 **[Complete Documentation](https://egile-mcp-starter.readthedocs.io/)** - Full documentation hosted on ReadTheDocs
 
-- **[Templates Guide](docs/templates.md)**: Comprehensive documentation on available templates, the plugin architecture, and how to create custom templates
-- **[Configuration](docs/configuration.md)**: Detailed configuration options for each template
-- **[API Reference](docs/api_reference.md)**: Complete API documentation
+The documentation includes:
+
+- **[Installation Guide](https://egile-mcp-starter.readthedocs.io/en/latest/installation.html)**: Detailed installation instructions
+- **[Quick Start](https://egile-mcp-starter.readthedocs.io/en/latest/quickstart.html)**: Get up and running quickly
+- **[Configuration](https://egile-mcp-starter.readthedocs.io/en/latest/configuration.html)**: Detailed configuration options
+- **[Server Types](https://egile-mcp-starter.readthedocs.io/en/latest/server_types.html)**: Available templates and their features
+- **[API Reference](https://egile-mcp-starter.readthedocs.io/en/latest/api_reference.html)**: Complete API documentation
+- **[Contributing](https://egile-mcp-starter.readthedocs.io/en/latest/contributing.html)**: How to contribute to the project
 
 ## Contributing
 
@@ -280,10 +288,11 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## Support
 
-- 📧 Email: jpoullet2000@gmail.com
-- 🐛 Issues: [GitHub Issues](https://github.com/jpoullet2000/egile-mcp-starter/issues)
-- 📖 MCP Documentation: [Model Context Protocol](https://modelcontextprotocol.io/)
-- 🚀 FASTMCP: [FASTMCP Framework](https://github.com/jlowin/fastmcp)
+- � **Documentation**: [egile-mcp-starter.readthedocs.io](https://egile-mcp-starter.readthedocs.io/)
+- �📧 **Email**: jpoullet2000@gmail.com
+- 🐛 **Issues**: [GitHub Issues](https://github.com/jpoullet2000/egile-mcp-starter/issues)
+- 📖 **MCP Documentation**: [Model Context Protocol](https://modelcontextprotocol.io/)
+- 🚀 **FASTMCP**: [FASTMCP Framework](https://github.com/jlowin/fastmcp)
 
 ## Acknowledgments
 
