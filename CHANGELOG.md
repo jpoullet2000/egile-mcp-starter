@@ -46,7 +46,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Template directories organized under `egile_mcp_starter/templates/`
 - **Documentation Structure**: Reorganized documentation
   - Consolidated plugin architecture docs into main documentation
-  - Removed standalone `PLUGIN_ARCHITECTURE.md`
   - Integrated template information into README and docs
 
 ### Fixed
