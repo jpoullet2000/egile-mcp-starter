@@ -52,6 +52,34 @@ EOF
 egile-mcp-starter --config-file my-config.yaml --no-input
 ```
 
+### Quick Generation with CLI Options
+
+For quick project generation without configuration files, use CLI options:
+
+```bash
+# Generate with custom project name
+egile-mcp-starter --project-name "weather_api_server" --no-input
+
+# Choose template and customize name
+egile-mcp-starter --template rag --project-name "document_search_server" --no-input
+
+# Generate in specific directory with custom name
+egile-mcp-starter --output-dir ./servers --project-name "my_custom_server" --verbose
+```
+
+### CLI Options Reference
+
+| Option | Description | Example |
+|--------|-------------|---------|
+| `--project-name` | Override project name (affects directory and package names) | `--project-name "my_server"` |
+| `--template` | Choose template (`mcp`, `rag`) | `--template rag` |
+| `--output-dir` | Output directory | `--output-dir ./projects` |
+| `--no-input` | Skip interactive prompts | `--no-input` |
+| `--verbose` | Show detailed output | `--verbose` |
+| `--list-templates` | List available templates | `--list-templates` |
+
+**Note:** The `--project-name` option is particularly useful for CI/CD pipelines where you need predictable directory names.
+
 ## Project Structure
 
 After generation, your project will have this structure:

@@ -119,7 +119,7 @@ jobs:
           include_examples: "y"
           server_type: "tools"
         EOF
-        poetry run egile-mcp-starter --output-dir . --config-file test-config.yaml --no-input
+        poetry run egile-mcp-starter --project-name "test_tools_server" --output-dir . --config-file test-config.yaml --no-input
         ls -la test_tools_server/
     
     - name: Test generated project structure

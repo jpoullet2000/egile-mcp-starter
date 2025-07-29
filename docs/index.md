@@ -14,6 +14,7 @@ A comprehensive cookiecutter template for creating Model Context Protocol (MCP) 
 
 installation
 quickstart
+templates
 configuration
 server_types
 api_reference
@@ -28,8 +29,9 @@ egile-mcp-starter is a comprehensive cookiecutter template that helps you quickl
 ## Key Features
 
 - 🚀 **Modern Python Setup**: Uses Poetry for dependency management and packaging
-- 🏗️ **FASTMCP Framework**: Built on the efficient FASTMCP framework for MCP servers
-- 🛠️ **Flexible Server Types**: Choose from tools, resources, prompts, or full-featured servers
+- 🏗️ **FASTMCP Framework**: Built on the efficient FASTMCP framework for MCP servers  
+- � **Plugin Architecture**: Extensible template system with multiple server types
+- 🧠 **RAG Template**: Advanced template with vector database support (Chroma, Pinecone, Weaviate, Qdrant, FAISS)
 - 🧪 **Testing Ready**: Comprehensive test suite with pytest and coverage
 - 🔧 **Development Tools**: Pre-configured with Black, Flake8, MyPy, and pre-commit hooks
 - 🐳 **Docker Support**: Optional Docker configuration for easy deployment

@@ -40,6 +40,30 @@ Use it with:
 egile-mcp-starter --config-file my-config.yaml --no-input
 ```
 
+### CLI Option Overrides
+
+You can override specific configuration values using command-line options, even when using a configuration file:
+
+```bash
+# Override project name via CLI
+egile-mcp-starter --config-file my-config.yaml --project-name "custom_server_name" --no-input
+
+# Quick generation with minimal CLI options
+egile-mcp-starter --project-name "my_api_server" --template mcp --no-input
+
+# Override output directory
+egile-mcp-starter --project-name "test_server" --output-dir ./build --no-input
+```
+
+**Available CLI Overrides:**
+- `--project-name`: Override the project name (affects directory and package names)
+- `--template`: Choose the template (`mcp`, `rag`)  
+- `--output-dir`: Specify output directory
+- `--verbose`: Enable detailed output
+
+The CLI overrides take precedence over configuration file values.
+```
+
 ## Configuration Options
 
 ### Project Information

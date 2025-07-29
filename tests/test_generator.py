@@ -20,7 +20,7 @@ class TestMCPProjectGenerator:
         assert generator.no_input is False
         assert generator.config_file is None
         assert generator.verbose is False
-        assert generator.template_dir.exists()
+        assert generator.template_name == "mcp"  # Default template
 
     def test_generator_with_custom_params(self):
         """Test generator with custom parameters."""
@@ -43,7 +43,7 @@ class TestMCPProjectGenerator:
         assert "project_slug" in context
         assert "author_name" in context
         assert "python_version" in context
-        assert context["project_name"] == "my-mcp-server"
+        assert context["project_name"] == "My MCP Server"  # Updated default value
         assert context["python_version"] == "3.11"
 
     @patch("egile_mcp_starter.generator.cookiecutter")

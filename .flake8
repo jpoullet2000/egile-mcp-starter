@@ -11,7 +11,8 @@ exclude =
     dist,
     build,
     *.egg-info,
-    egile_mcp_starter/template
+    egile_mcp_starter/template,
+    egile_mcp_starter/templates
 extend-ignore = E203, W503
 select = E,W,F,C
 per-file-ignores =
