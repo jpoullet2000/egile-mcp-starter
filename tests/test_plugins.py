@@ -7,9 +7,9 @@ import pytest
 
 from egile_mcp_starter.generator import MCPProjectGenerator
 from egile_mcp_starter.plugins.base import TemplatePlugin
-from egile_mcp_starter.plugins.registry import TemplateRegistry, get_registry
 from egile_mcp_starter.plugins.builtin.mcp_template import MCPTemplatePlugin
 from egile_mcp_starter.plugins.builtin.rag_template import RAGTemplatePlugin
+from egile_mcp_starter.plugins.registry import TemplateRegistry, get_registry
 
 
 class TestTemplatePlugin:

@@ -7,13 +7,16 @@ from ..base import TemplatePlugin
 
 
 class RAGTemplatePlugin(TemplatePlugin):
-    """RAG MCP server template plugin with vector databases and retrieval capabilities."""
+    """RAG MCP server template plugin with vector databases and retrieval
+    capabilities."""
 
     def __init__(self):
         """Initialize the RAG template plugin."""
         super().__init__(
             name="rag",
-            description="RAG-enabled MCP server with vector databases and retrieval tools",
+            description=(
+                "RAG-enabled MCP server with vector databases and " "retrieval tools"
+            ),
             version="1.0.0",
         )
 
@@ -34,7 +37,10 @@ class RAGTemplatePlugin(TemplatePlugin):
         return {
             "project_name": "My RAG MCP Server",
             "project_slug": "my_rag_mcp_server",
-            "project_description": "A RAG-enabled Model Context Protocol server with vector search capabilities",
+            "project_description": (
+                "A RAG-enabled Model Context Protocol server "
+                "with vector search capabilities"
+            ),
             "author_name": "Your Name",
             "author_email": "your.email@example.com",
             "github_username": "yourusername",
@@ -46,7 +52,8 @@ class RAGTemplatePlugin(TemplatePlugin):
             "license": "MIT",
             "include_examples": "y",
             "vector_db": "chroma",  # chroma, pinecone, weaviate, qdrant, faiss
-            "embedding_model": "sentence-transformers",  # sentence-transformers, openai, cohere
+            # sentence-transformers, openai, cohere
+            "embedding_model": "sentence-transformers",
             "document_loaders": "y",  # Include various document loaders
             "web_scraping": "y",  # Include web scraping capabilities
             "pdf_processing": "y",  # Include PDF processing
@@ -122,44 +129,57 @@ class RAGTemplatePlugin(TemplatePlugin):
         # Set up dependencies based on choices
         dependencies = ["fastmcp", "pydantic", "pyyaml", "click"]
 
-        # Add vector database dependencies
-        vector_db = context.get("vector_db", "chroma")
-        if vector_db == "chroma":
-            dependencies.extend(["chromadb", "sqlite3"])
-        elif vector_db == "pinecone":
-            dependencies.append("pinecone-client")
-        elif vector_db == "weaviate":
-            dependencies.append("weaviate-client")
-        elif vector_db == "qdrant":
-            dependencies.append("qdrant-client")
-        elif vector_db == "faiss":
-            dependencies.extend(["faiss-cpu", "numpy"])
-
-        # Add embedding model dependencies
-        embedding_model = context.get("embedding_model", "sentence-transformers")
-        if embedding_model == "sentence-transformers":
-            dependencies.append("sentence-transformers")
-        elif embedding_model == "openai":
-            dependencies.append("openai")
-        elif embedding_model == "cohere":
-            dependencies.append("cohere")
-
-        # Add document processing dependencies
-        if context.get("pdf_processing") == "y":
-            dependencies.extend(["pypdf2", "pdfplumber"])
-
-        if context.get("web_scraping") == "y":
-            dependencies.extend(["requests", "beautifulsoup4", "scrapy"])
-
-        if context.get("document_loaders") == "y":
-            dependencies.extend(["python-docx", "openpyxl"])
-
-        if context.get("include_reranker") == "y":
-            dependencies.append("sentence-transformers")  # for cross-encoder models
+        # Add specific dependencies
+        dependencies.extend(self._get_vector_db_dependencies(context))
+        dependencies.extend(self._get_embedding_dependencies(context))
+        dependencies.extend(self._get_document_processing_dependencies(context))
 
         context["_computed_dependencies"] = dependencies
-
         return context
+
+    def _get_vector_db_dependencies(self, context: Dict[str, Any]) -> list:
+        """Get dependencies for the selected vector database."""
+        vector_db = context.get("vector_db", "chroma")
+        if vector_db == "chroma":
+            return ["chromadb", "sqlite3"]
+        elif vector_db == "pinecone":
+            return ["pinecone-client"]
+        elif vector_db == "weaviate":
+            return ["weaviate-client"]
+        elif vector_db == "qdrant":
+            return ["qdrant-client"]
+        elif vector_db == "faiss":
+            return ["faiss-cpu", "numpy"]
+        return []
+
+    def _get_embedding_dependencies(self, context: Dict[str, Any]) -> list:
+        """Get dependencies for the selected embedding model."""
+        embedding_model = context.get("embedding_model", "sentence-transformers")
+        if embedding_model == "sentence-transformers":
+            return ["sentence-transformers"]
+        elif embedding_model == "openai":
+            return ["openai"]
+        elif embedding_model == "cohere":
+            return ["cohere"]
+        return []
+
+    def _get_document_processing_dependencies(self, context: Dict[str, Any]) -> list:
+        """Get dependencies for document processing features."""
+        deps = []
+
+        if context.get("pdf_processing") == "y":
+            deps.extend(["pypdf2", "pdfplumber"])
+
+        if context.get("web_scraping") == "y":
+            deps.extend(["requests", "beautifulsoup4", "scrapy"])
+
+        if context.get("document_loaders") == "y":
+            deps.extend(["python-docx", "openpyxl"])
+
+        if context.get("include_reranker") == "y":
+            deps.append("sentence-transformers")  # for cross-encoder models
+
+        return deps
 
     def post_generate_hook(self, project_path: Path, context: Dict[str, Any]) -> None:
         """Hook called after project generation.
