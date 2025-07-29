@@ -1,0 +1,111 @@
+# Configuration for {{ cookiecutter.project_name }}
+# Copy this file to config.yaml and customize as needed
+
+# Server configuration
+server:
+  host: "localhost"
+  port: 8000
+  log_level: "INFO"
+
+# Vector database configuration
+vector_db:
+  type: "{{ cookiecutter.vector_db }}"
+  {% if cookiecutter.vector_db == "chroma" %}
+  # Chroma configuration
+  path: "./data/chroma"
+  collection_name: "documents"
+  {% elif cookiecutter.vector_db == "pinecone" %}
+  # Pinecone configuration
+  api_key: "${PINECONE_API_KEY}"
+  environment: "${PINECONE_ENVIRONMENT}"
+  index_name: "rag-documents"
+  {% elif cookiecutter.vector_db == "weaviate" %}
+  # Weaviate configuration
+  url: "http://localhost:8080"
+  class_name: "Document"
+  {% elif cookiecutter.vector_db == "qdrant" %}
+  # Qdrant configuration
+  url: "http://localhost:6333"
+  collection_name: "documents"
+  {% endif %}
+
+# Embedding model configuration
+embedding:
+  model: "{{ cookiecutter.embedding_model }}"
+  {% if cookiecutter.embedding_model == "sentence-transformers" %}
+  # Sentence Transformers configuration
+  model_name: "all-MiniLM-L6-v2"
+  device: "cpu"  # or "cuda" if available
+  {% elif cookiecutter.embedding_model == "openai" %}
+  # OpenAI configuration
+  api_key: "${OPENAI_API_KEY}"
+  model_name: "text-embedding-ada-002"
+  {% elif cookiecutter.embedding_model == "cohere" %}
+  # Cohere configuration
+  api_key: "${COHERE_API_KEY}"
+  model_name: "embed-english-v3.0"
+  {% endif %}
+
+# Text chunking configuration
+chunking:
+  strategy: "{{ cookiecutter.chunk_strategy }}"
+  chunk_size: 1000
+  chunk_overlap: 200
+  {% if cookiecutter.chunk_strategy == "semantic" %}
+  # Semantic chunking options
+  similarity_threshold: 0.5
+  {% elif cookiecutter.chunk_strategy == "fixed" %}
+  # Fixed size chunking options
+  separators: ["\n\n", "\n", ". ", " "]
+  {% endif %}
+
+{% if cookiecutter.include_reranker == "y" %}
+# Reranking configuration
+reranker:
+  enabled: true
+  model: "cross-encoder/ms-marco-MiniLM-L-6-v2"
+  top_k: 10
+  score_threshold: 0.3
+{% endif %}
+
+{% if cookiecutter.web_scraping == "y" %}
+# Web scraping configuration
+web_scraping:
+  user_agent: "{{ cookiecutter.project_slug }}/{{ cookiecutter.version }}"
+  max_pages: 100
+  delay: 1.0  # seconds between requests
+  timeout: 30
+{% endif %}
+
+{% if cookiecutter.pdf_processing == "y" %}
+# PDF processing configuration
+pdf_processing:
+  extract_images: false
+  preserve_layout: true
+  password: null
+{% endif %}
+
+# Document processing configuration
+document_processing:
+  max_file_size: 10485760  # 10MB in bytes
+  allowed_extensions: [
+    ".txt", ".md", ".rst",
+    {% if cookiecutter.pdf_processing == "y" %}".pdf",{% endif %}
+    {% if cookiecutter.document_loaders == "y" %}".docx", ".xlsx", ".pptx",{% endif %}
+  ]
+  ignore_patterns: ["*.tmp", "*.log", "__pycache__/*"]
+
+# Search configuration
+search:
+  default_limit: 10
+  max_limit: 100
+  similarity_threshold: 0.7
+  {% if cookiecutter.include_reranker == "y" %}
+  use_reranking: true
+  {% endif %}
+
+# Caching configuration (optional)
+cache:
+  enabled: true
+  ttl: 3600  # 1 hour in seconds
+  max_size: 1000  # maximum number of cached items

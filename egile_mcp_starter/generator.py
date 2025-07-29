@@ -8,6 +8,8 @@ try:
 except ImportError:
     cookiecutter = None
 
+from .plugins.registry import get_registry
+
 
 class MCPProjectGenerator:
     """Generator for MCP server projects using the FASTMCP framework."""
@@ -19,6 +21,7 @@ class MCPProjectGenerator:
         config_file: Optional[str] = None,
         default_config: bool = False,
         verbose: bool = False,
+        template: str = "mcp",
     ):
         """Initialize the MCP project generator.
 
@@ -28,14 +31,23 @@ class MCPProjectGenerator:
             config_file: Path to cookiecutter config file
             default_config: Use default configuration values
             verbose: Enable verbose output
+            template: Name of the template to use (default: "mcp")
         """
         self.output_dir = Path(output_dir).resolve()
         self.no_input = no_input or default_config
         self.config_file = config_file
         self.verbose = verbose
+        self.template_name = template
 
-        # Get the template directory
-        self.template_dir = Path(__file__).parent / "template"
+        # Get the template registry
+        self.registry = get_registry()
+
+        # Validate template exists
+        if not self.registry.get_plugin(template):
+            available = ", ".join(self.registry.get_plugin_names())
+            raise ValueError(
+                f"Template '{template}' not found. Available templates: {available}"
+            )
 
     def generate(self) -> Path:
         """Generate a new MCP server project.
@@ -52,20 +64,55 @@ class MCPProjectGenerator:
                 "pip install cookiecutter"
             )
 
+        # Get the template plugin
+        plugin = self.registry.get_plugin(self.template_name)
+        if not plugin:
+            raise Exception(f"Template '{self.template_name}' not found")
+
+        template_dir = plugin.get_template_path()
+
         if self.verbose:
             print(f"🔨 Generating MCP server project in: {self.output_dir}")
-            print(f"📁 Using template from: {self.template_dir}")
+            print(f"📁 Using template: {plugin.name} ({plugin.description})")
+            print(f"📂 Template directory: {template_dir}")
 
         try:
-            # Use cookiecutter to generate the project
-            project_path = cookiecutter(
-                str(self.template_dir),
-                output_dir=str(self.output_dir),
-                no_input=self.no_input,
-                config_file=self.config_file,
-            )
+            # Get default context from plugin
+            default_context = plugin.get_default_context()
 
-            return Path(project_path)
+            # Apply pre-generation hook
+            if not self.no_input:
+                # In interactive mode, cookiecutter will handle the prompts
+                context = default_context
+            else:
+                # In non-interactive mode, use defaults
+                context = default_context
+
+            context = plugin.pre_generate_hook(context)
+
+            # Use cookiecutter to generate the project
+            if self.no_input:
+                project_path = cookiecutter(
+                    str(template_dir),
+                    output_dir=str(self.output_dir),
+                    no_input=True,
+                    extra_context=context,
+                    config_file=self.config_file,
+                )
+            else:
+                project_path = cookiecutter(
+                    str(template_dir),
+                    output_dir=str(self.output_dir),
+                    no_input=False,
+                    config_file=self.config_file,
+                )
+
+            project_path_obj = Path(project_path)
+
+            # Apply post-generation hook
+            plugin.post_generate_hook(project_path_obj, context)
+
+            return project_path_obj
 
         except Exception as e:
             raise Exception(f"Failed to generate MCP server project: {e}") from e
@@ -76,6 +123,11 @@ class MCPProjectGenerator:
         Returns:
             Dictionary of default template variables
         """
+        plugin = self.registry.get_plugin(self.template_name)
+        if plugin:
+            return plugin.get_default_context()
+
+        # Fallback to original defaults
         return {
             "project_name": "my-mcp-server",
             "project_slug": "my_mcp_server",
@@ -88,4 +140,14 @@ class MCPProjectGenerator:
             "use_github_actions": "y",
             "use_pre_commit": "y",
             "license": "MIT",
+        }
+
+    def list_available_templates(self) -> Dict[str, str]:
+        """List all available templates.
+
+        Returns:
+            Dictionary mapping template names to descriptions
+        """
+        return {
+            plugin.name: plugin.description for plugin in self.registry.list_plugins()
         }

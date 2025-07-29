@@ -38,6 +38,7 @@ class TestCLI:
             config_file=None,
             default_config=False,
             verbose=False,
+            template="mcp",  # Added template parameter
         )
         mock_generator.generate.assert_called_once()
 
@@ -60,6 +61,7 @@ class TestCLI:
             config_file=None,
             default_config=False,
             verbose=True,
+            template="mcp",  # Added template parameter
         )
 
     @patch("egile_mcp_starter.cli.MCPProjectGenerator")
@@ -75,8 +77,8 @@ class TestCLI:
         assert result.exit_code == 0
         assert "MCP server project generated successfully" in result.output
         assert "Next steps:" in result.output
-        assert "cd /tmp/test-project" in result.output
-        assert "poetry install" in result.output
+        assert "cd test-project" in result.output  # Fixed to use project name only
+        assert "pip install -e ." in result.output
 
     @patch("egile_mcp_starter.cli.MCPProjectGenerator")
     def test_cli_error_handling(self, mock_generator_class):
@@ -93,7 +95,7 @@ class TestCLI:
         print(f"Exception: {result.exception}")
 
         assert result.exit_code == 1
-        assert "Error generating project: Test error" in result.output
+        assert "❌ Error: Test error" in result.output
 
     @patch("egile_mcp_starter.cli.MCPProjectGenerator")
     def test_cli_with_config_file(self, mock_generator_class):
@@ -117,4 +119,5 @@ class TestCLI:
                 config_file="test-config.yaml",
                 default_config=False,
                 verbose=False,
+                template="mcp",  # Added template parameter
             )

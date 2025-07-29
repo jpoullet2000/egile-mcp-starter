@@ -1,0 +1,115 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "{{ cookiecutter.project_slug }}"
+version = "{{ cookiecutter.version }}"
+description = "{{ cookiecutter.project_description }}"
+authors = [{name = "{{ cookiecutter.author_name }}", email = "{{ cookiecutter.author_email }}"}]
+readme = "README.md"
+requires-python = ">={{ cookiecutter.python_version }}"
+keywords = ["mcp", "model-context-protocol", "fastmcp", "rag", "vector-search", "ai"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    {% if cookiecutter.license == "MIT" %}
+    "License :: OSI Approved :: MIT License",
+    {% elif cookiecutter.license == "Apache-2.0" %}
+    "License :: OSI Approved :: Apache Software License",
+    {% elif cookiecutter.license == "GPL-3.0" %}
+    "License :: OSI Approved :: GNU General Public License v3 (GPLv3)",
+    {% elif cookiecutter.license == "BSD-3-Clause" %}
+    "License :: OSI Approved :: BSD License",
+    {% endif %}
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: {{ cookiecutter.python_version }}",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+]
+dependencies = [
+    "fastmcp>=0.1.0",
+    "pydantic>=2.0.0",
+    "pyyaml>=6.0",
+    "click>=8.0.0",
+    {% if cookiecutter.vector_db == "chroma" %}
+    "chromadb>=0.4.0",
+    {% elif cookiecutter.vector_db == "pinecone" %}
+    "pinecone-client>=3.0.0",
+    {% elif cookiecutter.vector_db == "weaviate" %}
+    "weaviate-client>=4.0.0",
+    {% elif cookiecutter.vector_db == "qdrant" %}
+    "qdrant-client>=1.6.0",
+    {% endif %}
+    {% if cookiecutter.embedding_model == "sentence-transformers" %}
+    "sentence-transformers>=2.2.0",
+    "torch>=2.0.0",
+    {% elif cookiecutter.embedding_model == "openai" %}
+    "openai>=1.0.0",
+    {% elif cookiecutter.embedding_model == "cohere" %}
+    "cohere>=4.0.0",
+    {% endif %}
+    {% if cookiecutter.pdf_processing == "y" %}
+    "pypdf2>=3.0.0",
+    "pdfplumber>=0.9.0",
+    {% endif %}
+    {% if cookiecutter.web_scraping == "y" %}
+    "requests>=2.31.0",
+    "beautifulsoup4>=4.12.0",
+    "scrapy>=2.11.0",
+    {% endif %}
+    {% if cookiecutter.document_loaders == "y" %}
+    "python-docx>=0.8.11",
+    "openpyxl>=3.1.0",
+    {% endif %}
+    {% if cookiecutter.include_reranker == "y" %}
+    "rank-bm25>=0.2.2",
+    {% endif %}
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.0.0",
+    "pytest-cov>=4.0.0",
+    "pytest-asyncio>=0.21.0",
+    "black>=23.0.0",
+    "flake8>=6.0.0",
+    "mypy>=1.0.0",
+    "pre-commit>=3.0.0",
+    "isort>=5.12.0",
+]
+
+[project.scripts]
+{{ cookiecutter.project_slug }} = "{{ cookiecutter.project_slug }}.cli:main"
+
+[project.urls]
+Homepage = "https://github.com/{{ cookiecutter.github_username }}/{{ cookiecutter.project_slug }}"
+Repository = "https://github.com/{{ cookiecutter.github_username }}/{{ cookiecutter.project_slug }}"
+Issues = "https://github.com/{{ cookiecutter.github_username }}/{{ cookiecutter.project_slug }}/issues"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.black]
+line-length = 88
+target-version = ["py{{ cookiecutter.python_version.replace('.', '') }}"]
+
+[tool.mypy]
+python_version = "{{ cookiecutter.python_version }}"
+strict = true
+warn_return_any = true
+warn_unused_configs = true
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = ["test_*.py"]
+python_functions = ["test_*"]
+addopts = [
+    "--strict-markers",
+    "--strict-config",
+    "--cov=src/{{ cookiecutter.project_slug }}",
+    "--cov-report=term-missing",
+    "--cov-report=html",
+    "--cov-fail-under=80"
+]

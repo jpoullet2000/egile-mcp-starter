@@ -14,6 +14,7 @@ A comprehensive cookiecutter template for creating Model Context Protocol (MCP) 
 
 installation
 quickstart
+templates
 configuration
 server_types
 api_reference
