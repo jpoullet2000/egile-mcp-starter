@@ -127,8 +127,4 @@ main.params[5].type = click.Choice(_get_template_choices())
 
 
 if __name__ == "__main__":
-    main()
-
-
-if __name__ == "__main__":
     sys.exit(main())

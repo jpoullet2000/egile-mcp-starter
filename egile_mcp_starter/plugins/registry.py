@@ -119,11 +119,14 @@ class TemplateRegistry:
     def discover_external_plugins(self) -> None:
         """Discover external template plugins via entry points."""
         try:
-            import pkg_resources
+            try:
+                # Python 3.8+
+                from importlib.metadata import entry_points
+            except ImportError:
+                # Python < 3.8
+                from importlib_metadata import entry_points  # type: ignore
 
-            for entry_point in pkg_resources.iter_entry_points(
-                "egile_mcp_starter.templates"
-            ):
+            for entry_point in entry_points(group="egile_mcp_starter.templates"):
                 try:
                     plugin_class = entry_point.load()
                     plugin_instance = plugin_class()
