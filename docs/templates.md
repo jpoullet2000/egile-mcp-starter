@@ -33,7 +33,7 @@ egile-mcp-starter --template mcp
 The RAG template creates advanced MCP servers with vector search and document processing capabilities:
 
 **Features:**
-- Vector database integration (Chroma, Pinecone, Weaviate, Qdrant)
+- Vector database integration (Chroma, Pinecone, Weaviate, Qdrant, FAISS)
 - Multiple embedding models (Sentence Transformers, OpenAI, Cohere)
 - Document processing (PDF, DOCX, Excel, text files)
 - Web scraping capabilities
@@ -56,7 +56,7 @@ The RAG template creates advanced MCP servers with vector search and document pr
 
 | Option | Description | Choices |
 |--------|-------------|---------|
-| `vector_db` | Vector database to use | chroma, pinecone, weaviate, qdrant |
+| `vector_db` | Vector database to use | chroma, pinecone, weaviate, qdrant, faiss |
 | `embedding_model` | Embedding model provider | sentence-transformers, openai, cohere |
 | `document_loaders` | Include document loaders | y/n |
 | `web_scraping` | Include web scraping | y/n |

@@ -12,7 +12,7 @@
     "use_pre_commit": ["y", "n"],
     "license": ["MIT", "Apache-2.0", "GPL-3.0", "BSD-3-Clause", "None"],
     "include_examples": ["y", "n"],
-    "vector_db": ["chroma", "pinecone", "weaviate", "qdrant"],
+    "vector_db": ["chroma", "pinecone", "weaviate", "qdrant", "faiss"],
     "embedding_model": ["sentence-transformers", "openai", "cohere"],
     "document_loaders": ["y", "n"],
     "web_scraping": ["y", "n"],

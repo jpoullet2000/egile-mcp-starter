@@ -26,6 +26,9 @@ vector_db:
   type: {{ cookiecutter.vector_db }}
   {% if cookiecutter.vector_db == 'chroma' %}
   path: "./data/chroma"
+  {% elif cookiecutter.vector_db == 'faiss' %}
+  database_url: "./data/faiss"
+  dimension: 384
   {% elif cookiecutter.vector_db == 'pinecone' %}
   api_key: "your-pinecone-api-key"
   environment: "your-pinecone-environment"

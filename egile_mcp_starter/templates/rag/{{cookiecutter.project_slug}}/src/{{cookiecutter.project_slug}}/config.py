@@ -16,12 +16,14 @@ class VectorDBConfig(BaseModel):
     """Configuration for vector database."""
     type: str
     path: Optional[str] = None
+    database_url: Optional[str] = None  # For FAISS, Chroma, etc.
     collection_name: str = "documents"
     api_key: Optional[str] = None
     environment: Optional[str] = None
     index_name: Optional[str] = None
     url: Optional[str] = None
     class_name: Optional[str] = None
+    dimension: Optional[int] = None  # For FAISS and other vector stores
 
 
 class ChunkingConfig(BaseModel):

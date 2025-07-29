@@ -4,12 +4,12 @@ build-backend = "poetry.core.masonry.api"
 
 [project]
 name = "egile-mcp-starter"
-version = "0.1.0"
-description = "A comprehensive cookiecutter template for creating Model Context Protocol (MCP) servers using the FASTMCP framework"
+version = "0.2.0"
+description = "A comprehensive and extensible cookiecutter template system for creating Model Context Protocol (MCP) servers with plugin architecture supporting multiple templates including RAG-enabled servers"
 authors = [{name = "Jean-Baptiste Poullet", email = "egile@gmail.com"}]
 readme = "README.md"
 requires-python = ">=3.10"
-keywords = ["mcp", "model-context-protocol", "fastmcp", "cookiecutter", "template", "ai", "assistant"]
+keywords = ["mcp", "model-context-protocol", "fastmcp", "cookiecutter", "template", "ai", "assistant", "rag", "retrieval-augmented-generation", "vector-database", "plugin-architecture", "chroma", "pinecone", "faiss", "embedding"]
 classifiers = [
     "Development Status :: 4 - Beta",
     "Intended Audience :: Developers",
@@ -44,6 +44,9 @@ packages = [{include = "egile_mcp_starter"}]
 include = [
     "egile_mcp_starter/template/**/*",
     "egile_mcp_starter/template/**/.*",
+    "egile_mcp_starter/templates/**/*",
+    "egile_mcp_starter/templates/**/.*",
+    "egile_mcp_starter/plugins/**/*",
 ]
 
 [tool.poetry.group.dev.dependencies]

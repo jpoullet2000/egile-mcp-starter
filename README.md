@@ -78,7 +78,7 @@ egile-mcp-starter --template mcp
 
 #### 🧠 RAG Template
 Advanced RAG-enabled MCP server with vector search capabilities:
-- **Vector Databases**: Chroma, Pinecone, Weaviate, Qdrant support
+- **Vector Databases**: Chroma, Pinecone, Weaviate, Qdrant, FAISS support
 - **Embedding Models**: Sentence Transformers, OpenAI, Cohere
 - **Document Processing**: PDF, DOCX, Excel, text files
 - **Web Scraping**: Optional web page scraping and indexing

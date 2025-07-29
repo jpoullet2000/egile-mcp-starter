@@ -14,11 +14,16 @@ vector_db:
   # Chroma configuration
   path: "./data/chroma"
   collection_name: "documents"
+  {% elif cookiecutter.vector_db == "faiss" %}
+  # FAISS configuration
+  database_url: "./data/faiss"
+  dimension: 384  # Match your embedding model dimension
   {% elif cookiecutter.vector_db == "pinecone" %}
   # Pinecone configuration
   api_key: "${PINECONE_API_KEY}"
   environment: "${PINECONE_ENVIRONMENT}"
   index_name: "rag-documents"
+  dimension: 384
   {% elif cookiecutter.vector_db == "weaviate" %}
   # Weaviate configuration
   url: "http://localhost:8080"

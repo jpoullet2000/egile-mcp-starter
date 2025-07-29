@@ -45,7 +45,7 @@ class RAGTemplatePlugin(TemplatePlugin):
             "use_pre_commit": "y",
             "license": "MIT",
             "include_examples": "y",
-            "vector_db": "chroma",  # chroma, pinecone, weaviate, qdrant
+            "vector_db": "chroma",  # chroma, pinecone, weaviate, qdrant, faiss
             "embedding_model": "sentence-transformers",  # sentence-transformers, openai, cohere
             "document_loaders": "y",  # Include various document loaders
             "web_scraping": "y",  # Include web scraping capabilities
@@ -92,7 +92,7 @@ class RAGTemplatePlugin(TemplatePlugin):
             return False
 
         # Validate vector database choice
-        valid_vector_dbs = ["chroma", "pinecone", "weaviate", "qdrant"]
+        valid_vector_dbs = ["chroma", "pinecone", "weaviate", "qdrant", "faiss"]
         if context.get("vector_db") not in valid_vector_dbs:
             return False
 
@@ -132,6 +132,8 @@ class RAGTemplatePlugin(TemplatePlugin):
             dependencies.append("weaviate-client")
         elif vector_db == "qdrant":
             dependencies.append("qdrant-client")
+        elif vector_db == "faiss":
+            dependencies.extend(["faiss-cpu", "numpy"])
 
         # Add embedding model dependencies
         embedding_model = context.get("embedding_model", "sentence-transformers")

@@ -219,11 +219,18 @@ class TestRAGTemplatePlugin:
 
     def test_validate_context(self):
         """Test RAG-specific context validation."""
-        valid_context = {
+        valid_context_chroma = {
             "project_name": "Test RAG Project",
             "author_name": "Test Author",
             "author_email": "test@example.com",
             "vector_db": "chroma",
+            "embedding_model": "sentence-transformers",
+        }
+        valid_context_faiss = {
+            "project_name": "Test RAG Project",
+            "author_name": "Test Author",
+            "author_email": "test@example.com",
+            "vector_db": "faiss",
             "embedding_model": "sentence-transformers",
         }
         invalid_vector_db = {
@@ -241,13 +248,14 @@ class TestRAGTemplatePlugin:
             "embedding_model": "invalid_model",
         }
 
-        assert self.plugin.validate_context(valid_context) is True
+        assert self.plugin.validate_context(valid_context_chroma) is True
+        assert self.plugin.validate_context(valid_context_faiss) is True
         assert self.plugin.validate_context(invalid_vector_db) is False
         assert self.plugin.validate_context(invalid_embedding) is False
 
     def test_pre_generate_hook_dependencies(self):
         """Test that pre-generation hook computes dependencies correctly."""
-        context = {
+        context_chroma = {
             "project_name": "Test RAG Project",
             "vector_db": "chroma",
             "embedding_model": "sentence-transformers",
@@ -255,7 +263,16 @@ class TestRAGTemplatePlugin:
             "web_scraping": "y",
         }
 
-        modified_context = self.plugin.pre_generate_hook(context)
+        context_faiss = {
+            "project_name": "Test RAG Project",
+            "vector_db": "faiss",
+            "embedding_model": "sentence-transformers",
+            "pdf_processing": "y",
+            "web_scraping": "y",
+        }
+
+        # Test Chroma dependencies
+        modified_context = self.plugin.pre_generate_hook(context_chroma)
         dependencies = modified_context["_computed_dependencies"]
 
         # Check base dependencies
@@ -271,6 +288,21 @@ class TestRAGTemplatePlugin:
         # Check optional feature dependencies
         assert "pypdf2" in dependencies  # PDF processing
         assert "requests" in dependencies  # Web scraping
+
+        # Test FAISS dependencies
+        modified_context_faiss = self.plugin.pre_generate_hook(context_faiss)
+        dependencies_faiss = modified_context_faiss["_computed_dependencies"]
+
+        # Check base dependencies
+        assert "fastmcp" in dependencies_faiss
+        assert "pydantic" in dependencies_faiss
+
+        # Check FAISS-specific dependencies
+        assert "faiss-cpu" in dependencies_faiss
+        assert "numpy" in dependencies_faiss
+
+        # Check embedding model dependencies
+        assert "sentence-transformers" in dependencies_faiss
 
 
 class TestGeneratorWithPlugins:
